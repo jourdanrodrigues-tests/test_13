@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "aktos_exercise_backend"
+version = "0.1.0"
+description = ""
+authors = []
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.12.1"
+dj-database-url = "*"
+django = "*"
+django-cors-headers = "*"
+gunicorn = "*"
+psycopg2-binary = "*"
+requests = "*"
+python-dotenv = "*"
+djangorestframework = "*"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

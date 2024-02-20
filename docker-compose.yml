@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+  database:
+    container_name: aktos_exercise_database
+    image: postgres:16.0-alpine
+    environment:
+      - POSTGRES_PASSWORD=aktos_exercise_pass
+      - POSTGRES_USER=aktos_exercise_user
+      - POSTGRES_DB=aktos_exercise_db
+
+  server:
+    container_name: aktos_exercise_server
+    build: .
+    command: gunicorn -b 0.0.0.0:8000 core.wsgi --log-file -
+    environment:
+      - DATABASE_URL=postgres://aktos_exercise_user:aktos_exercise_pass@database/aktos_exercise_db
+      - PRODUCTION=true
+      # Set the following in a ".env" file
+      - ALLOWED_HOSTS
+      - SECRET_KEY
+    ports:
+      - "8000:8000"
+    links:
+      - database
