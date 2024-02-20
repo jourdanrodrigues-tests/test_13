@@ -80,3 +80,12 @@ LOCALE_PATHS = [
 ]
 
 AUTH_USER_MODEL = "app.User"
+
+REST_FRAMEWORK = {
+    "DEFAULT_FILTER_BACKENDS": [
+        "django_filters.rest_framework.DjangoFilterBackend",
+    ],
+    "DEFAULT_PAGINATION_CLASS": "core.pagination.CursorPagination",
+    "PAGE_SIZE": 100,
+    "TEST_REQUEST_DEFAULT_FORMAT": "json",
+}
