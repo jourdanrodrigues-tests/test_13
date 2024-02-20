@@ -1,6 +1,7 @@
 from rest_framework.test import APITestCase
 
 from app.factories import ConsumerFactory
+from app.models import Consumer
 from app.tests.utils import TestCaseMixin
 
 
@@ -10,7 +11,7 @@ class TestGet(TestCaseMixin, APITestCase):
 
         response = self.client.get("/consumers/")
 
-        expected_payload = {
+        expected_data = {
             'next': None,
             'previous': None,
             'results': [
@@ -24,7 +25,41 @@ class TestGet(TestCaseMixin, APITestCase):
             ],
         }
 
-        self.assertOkResponse(response, expected_payload)
+        self.assertOkResponse(response, expected_data)
+
+    def test_when_has_more_than_one_page_then_returns_expected_response(self):
+        consumer2 = ConsumerFactory()
+        consumer1 = ConsumerFactory()
+
+        def build_consumer_data(consumer: Consumer) -> dict:
+            return {
+                "client_ref_number": str(consumer.client_ref_number),
+                "name": consumer.name,
+                "balance": consumer.balance,
+                "status": consumer.status,
+                "address": consumer.address,
+            }
+
+        response1 = self.client.get("/consumers/?page_size=1")
+
+        page2 = response1.data["next"]
+        expected_data = {
+            'next': page2,
+            'previous': None,
+            'results': [build_consumer_data(consumer1)],
+        }
+
+        self.assertOkResponse(response1, expected_data)
+
+        response2 = self.client.get(page2)
+        page1 = response2.data["previous"]
+        expected_data = {
+            'next': None,
+            'previous': page1,
+            'results': [build_consumer_data(consumer2)],
+        }
+
+        self.assertOkResponse(response2, expected_data)
 
     def test_when_max_balance_param_is_sent_then_returns_expected_consumers(self):
         ConsumerFactory(balance=2000)
