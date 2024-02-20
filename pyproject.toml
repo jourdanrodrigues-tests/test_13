@@ -16,6 +16,7 @@ requests = "*"
 python-dotenv = "*"
 djangorestframework = "*"
 django-filter = "*"
+factory-boy = "*"
 
 [build-system]
 requires = ["poetry-core"]
