@@ -42,12 +42,13 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Consumer',
             fields=[
-                ('ssn', models.CharField(max_length=9, primary_key=True, serialize=False)),
+                ('ssn', models.CharField(max_length=11, primary_key=True, serialize=False)),
                 ('client_ref_number', models.UUIDField()),
                 ('name', models.CharField(max_length=255)),
-                ('balance', models.IntegerField()),
+                ('balance', models.FloatField()),
                 ('status', models.CharField(choices=[('INACTIVE', 'Inactive'), ('PAID_IN_FULL', 'Paid in full'), ('IN_COLLECTION', 'In collection')], max_length=13)),
                 ('address', models.CharField(max_length=255)),
+                ('created_date', models.DateTimeField(auto_now_add=True)),
             ],
         ),
     ]

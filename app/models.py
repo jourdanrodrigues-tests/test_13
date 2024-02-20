@@ -13,9 +13,11 @@ class Consumer(models.Model):
         PAID_IN_FULL = 'PAID_IN_FULL', _('Paid in full')
         IN_COLLECTION = 'IN_COLLECTION', _('In collection')
 
-    ssn = models.CharField(max_length=9, primary_key=True)
+    ssn = models.CharField(max_length=11, primary_key=True)
     client_ref_number = models.UUIDField()
     name = models.CharField(max_length=255)
-    balance = models.IntegerField()
+    balance = models.FloatField()
     status = models.CharField(choices=StatusChoices, max_length=13)
     address = models.CharField(max_length=255)
+
+    created_date = models.DateTimeField(auto_now_add=True)

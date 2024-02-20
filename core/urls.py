@@ -8,6 +8,6 @@ router = DefaultRouter()
 router.register(r"consumers", views.ConsumerViewSet)
 
 urlpatterns = [
-    path("/", include(router.urls)),  # I'd rather have it under an "/api" domain but I wanna stick to the document
+    path("", include(router.urls)),  # I'd rather have it under an "/api" domain but I'm gonna stick to the document
     path("admin/", admin.site.urls),
 ]
