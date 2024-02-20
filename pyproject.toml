@@ -15,7 +15,7 @@ psycopg2-binary = "*"
 requests = "*"
 python-dotenv = "*"
 djangorestframework = "*"
-
+django-filter = "*"
 
 [build-system]
 requires = ["poetry-core"]
