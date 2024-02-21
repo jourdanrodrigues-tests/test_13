@@ -17,4 +17,4 @@ if [[ "${1}" == 'manage.py' ]]; then
   COMMAND="${COMMAND} server python manage.py"
 fi
 
-docker-compose ${COMMAND} ${@}
+docker compose ${COMMAND} ${@}
