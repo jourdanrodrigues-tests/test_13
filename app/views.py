@@ -1,5 +1,6 @@
 from rest_framework import mixins, status
 from rest_framework.decorators import action
+from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
@@ -12,6 +13,7 @@ class ConsumerViewSet(GenericViewSet, mixins.ListModelMixin):
     queryset = Consumer.objects.all()
     serializer_class = ConsumerSerializer
     filterset_class = ConsumerFilterSet
+    parser_classes = [MultiPartParser]
 
     @action(detail=False, methods=["POST"], serializer_class=ConsumerCsvUploadSerializer)
     def upload_csv(self, request):

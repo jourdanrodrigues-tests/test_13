@@ -17,6 +17,7 @@ python-dotenv = "*"
 djangorestframework = "*"
 django-filter = "*"
 factory-boy = "*"
+drf-yasg = "*"
 
 [build-system]
 requires = ["poetry-core"]

@@ -1,8 +1,14 @@
-# aktos_exercise
+# Aktos Exercise
 
 _Generated from [Jourdan's Django template](https://github.com/jourdanrodrigues/django-template)._
 
 This project runs entirely on Docker containers. Make sure to [have it](https://www.docker.com/community-edition#/download) in your environment.
+
+It's temporarily live at http://ec2-54-205-240-89.compute-1.amazonaws.com:8000/
+
+## Endpoints
+
+The API endpoints are thoroughly displayed at `/docs/` (Swagger UI).
 
 ## Linter
 
