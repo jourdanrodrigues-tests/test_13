@@ -1,5 +1,4 @@
 import csv
-
 import io
 import re
 
@@ -24,9 +23,9 @@ class ConsumerDataSerializer(serializers.Serializer):
 
     @staticmethod
     def validate_ssn(value: str) -> str:
-        if not re.match(r'^(\d{3}-\d{2}-\d{4}|\d{9})$', value):
+        if not re.match(r"^(\d{3}-\d{2}-\d{4}|\d{9})$", value):
             raise serializers.ValidationError("SSN must be 9 or 11 characters long")
-        return value if '-' in value else f"{value[:3]}-{value[3:5]}-{value[5:]}"
+        return value if "-" in value else f"{value[:3]}-{value[3:5]}-{value[5:]}"
 
     class Meta:
         fields = ("ssn", "client reference no", "consumer name", "balance", "status", "consumer address")
@@ -47,7 +46,7 @@ class ConsumerCsvUploadSerializer(serializers.Serializer):
     @staticmethod
     def validate_file(file) -> list[dict]:
         output = []
-        for row in csv.DictReader(io.TextIOWrapper(file, encoding='utf-8')):
+        for row in csv.DictReader(io.TextIOWrapper(file, encoding="utf-8")):
             serializer = ConsumerDataSerializer(data=row)
             serializer.is_valid(raise_exception=True)
             output.append(serializer.validated_data)
@@ -59,20 +58,20 @@ class ConsumerCsvUploadSerializer(serializers.Serializer):
 
     @transaction.atomic
     def create(self, validated_data: dict) -> dict:
-        entries = validated_data['file']
+        entries = validated_data["file"]
         consumers = self._fetch_consumers(entries)
 
         consumer_lookup = {consumer.ssn: consumer for consumer in consumers}
 
         for entry in entries:
-            consumer = consumer_lookup[entry['ssn']]
+            consumer = consumer_lookup[entry["ssn"]]
             for field, value in entry.items():
                 setattr(consumer, field, value)
 
         fields = [field for field in entries[0].keys() if field != Consumer._meta.pk.name]
         Consumer.objects.bulk_update(consumers, fields=fields)
 
-        return {'consumers': ConsumerSerializer(consumers, many=True).data}
+        return {"consumers": ConsumerSerializer(consumers, many=True).data}
 
     @staticmethod
     def _fetch_consumers(entries: list[dict]) -> list[Consumer]:
@@ -85,4 +84,3 @@ class ConsumerCsvUploadSerializer(serializers.Serializer):
         new_consumers = Consumer.objects.bulk_create([Consumer(**ssn_lookup[ssn]) for ssn in missing_ssns])
 
         return consumers_found + new_consumers
-

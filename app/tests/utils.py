@@ -1,5 +1,5 @@
 import json
-from datetime import datetime, date
+from datetime import date, datetime
 from typing import cast
 
 from django.test import SimpleTestCase

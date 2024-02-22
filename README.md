@@ -26,7 +26,7 @@ DATABASE_URL. Check the files [.env.example](.env.example) and [docker-compose.y
 ## Running the app
 
 The script [`compose.sh`](compose.sh) is there for you to run commands in the container. It's a simple wrapper around
- `docker-compose`, so you might want to take a look at [its documentation](https://docs.docker.com/compose/reference/).
+`docker-compose`, so you might want to take a look at [its documentation](https://docs.docker.com/compose/reference/).
 
 ```bash
 ./compose.sh up
@@ -50,6 +50,6 @@ docker-compose run --rm server sh
 docker-compose run --rm server python manage.py test
 ```
 
-- `~ dev ~` = `~ -f docker-compose.yml -f docker-compose.dev.yml ~`
-- `~ run ~` = `~ run --rm ~`
-- `~ manage.py ~` = `~ server manage.py ~`
+-   `~ dev ~` = `~ -f docker-compose.yml -f docker-compose.dev.yml ~`
+-   `~ run ~` = `~ run --rm ~`
+-   `~ manage.py ~` = `~ server manage.py ~`

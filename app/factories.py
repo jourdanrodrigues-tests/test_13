@@ -1,9 +1,10 @@
+import secrets
 from uuid import uuid4
 
-from app.models import Consumer
 import factory
-import secrets
 from factory import fuzzy
+
+from app.models import Consumer
 
 
 def generate_ssn():

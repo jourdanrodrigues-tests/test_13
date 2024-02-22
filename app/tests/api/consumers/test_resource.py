@@ -12,9 +12,9 @@ class TestGet(TestCaseMixin, APITestCase):
         response = self.client.get("/consumers/")
 
         expected_data = {
-            'next': None,
-            'previous': None,
-            'results': [
+            "next": None,
+            "previous": None,
+            "results": [
                 {
                     "client_ref_number": str(consumer.client_ref_number),
                     "name": consumer.name,
@@ -44,9 +44,9 @@ class TestGet(TestCaseMixin, APITestCase):
 
         page2 = response1.data["next"]
         expected_data = {
-            'next': page2,
-            'previous': None,
-            'results': [build_consumer_data(consumer1)],
+            "next": page2,
+            "previous": None,
+            "results": [build_consumer_data(consumer1)],
         }
 
         self.assertOkResponse(response1, expected_data)
@@ -54,9 +54,9 @@ class TestGet(TestCaseMixin, APITestCase):
         response2 = self.client.get(page2)
         page1 = response2.data["previous"]
         expected_data = {
-            'next': None,
-            'previous': page1,
-            'results': [build_consumer_data(consumer2)],
+            "next": None,
+            "previous": page1,
+            "results": [build_consumer_data(consumer2)],
         }
 
         self.assertOkResponse(response2, expected_data)

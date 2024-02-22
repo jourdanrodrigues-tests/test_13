@@ -1,5 +1,4 @@
 import csv
-
 import io
 from uuid import uuid4
 
@@ -14,21 +13,23 @@ class TestPost(TestCaseMixin, APITestCase):
     def test_that_it_returns_expected_response(self):
         client_ref = str(uuid4())
         csv_file = io.StringIO()
-        csv.writer(csv_file).writerows([
-            ["ssn", "client reference no", "consumer name", "consumer address", "balance", "status"],
-            ["123-45-6789", client_ref, 'Jane Doe', '123 Main St', "1000", Consumer.StatusChoices.IN_COLLECTION],
-        ])
+        csv.writer(csv_file).writerows(
+            [
+                ["ssn", "client reference no", "consumer name", "consumer address", "balance", "status"],
+                ["123-45-6789", client_ref, "Jane Doe", "123 Main St", "1000", Consumer.StatusChoices.IN_COLLECTION],
+            ]
+        )
         csv_file.seek(0)
 
         response = self.client.post("/consumers/upload_csv/", {"file": csv_file}, format="multipart")
 
         expected_data = [
             {
-                'address': '123 Main St',
-                'balance': 1000.0,
-                'client_ref_number': client_ref,
-                'name': 'Jane Doe',
-                'status': Consumer.StatusChoices.IN_COLLECTION,
+                "address": "123 Main St",
+                "balance": 1000.0,
+                "client_ref_number": client_ref,
+                "name": "Jane Doe",
+                "status": Consumer.StatusChoices.IN_COLLECTION,
             },
         ]
         self.assertOkResponse(response, expected_data)
@@ -37,11 +38,13 @@ class TestPost(TestCaseMixin, APITestCase):
         ssn = "123-45-6789"
         client_ref = str(uuid4())
         csv_file = io.StringIO()
-        csv.writer(csv_file).writerows([
-            ["ssn", "client reference no", "consumer name", "consumer address", "balance", "status"],
-            [ssn, client_ref, 'Jane Doe', '123 Main St', "1000", Consumer.StatusChoices.IN_COLLECTION],
-            [ssn, client_ref, 'Jane Doe', '123 Main St', "1020", Consumer.StatusChoices.PAID_IN_FULL],
-        ])
+        csv.writer(csv_file).writerows(
+            [
+                ["ssn", "client reference no", "consumer name", "consumer address", "balance", "status"],
+                [ssn, client_ref, "Jane Doe", "123 Main St", "1000", Consumer.StatusChoices.IN_COLLECTION],
+                [ssn, client_ref, "Jane Doe", "123 Main St", "1020", Consumer.StatusChoices.PAID_IN_FULL],
+            ]
+        )
         csv_file.seek(0)
 
         self.client.post("/consumers/upload_csv/", {"file": csv_file}, format="multipart")
@@ -59,13 +62,43 @@ class TestPost(TestCaseMixin, APITestCase):
     def test_when_there_are_multiple_entries_then_correctly_updates_the_consumer(self):
         consumer = ConsumerFactory()
         csv_file = io.StringIO()
-        csv.writer(csv_file).writerows([
-            ["ssn", "client reference no", "consumer name", "consumer address", "balance", "status"],
-            [consumer.ssn, consumer.client_ref_number, consumer.name, consumer.address, str(consumer.balance), consumer.status],
-            [consumer.ssn, consumer.client_ref_number, consumer.name, consumer.address, str(consumer.balance + 20), Consumer.StatusChoices.INACTIVE],
-            [consumer.ssn, consumer.client_ref_number, consumer.name, consumer.address, str(consumer.balance + 10), Consumer.StatusChoices.IN_COLLECTION],
-            [consumer.ssn, consumer.client_ref_number, consumer.name, consumer.address, str(consumer.balance + 30), Consumer.StatusChoices.PAID_IN_FULL],
-        ])
+        csv.writer(csv_file).writerows(
+            [
+                ["ssn", "client reference no", "consumer name", "consumer address", "balance", "status"],
+                [
+                    consumer.ssn,
+                    consumer.client_ref_number,
+                    consumer.name,
+                    consumer.address,
+                    str(consumer.balance),
+                    consumer.status,
+                ],
+                [
+                    consumer.ssn,
+                    consumer.client_ref_number,
+                    consumer.name,
+                    consumer.address,
+                    str(consumer.balance + 20),
+                    Consumer.StatusChoices.INACTIVE,
+                ],
+                [
+                    consumer.ssn,
+                    consumer.client_ref_number,
+                    consumer.name,
+                    consumer.address,
+                    str(consumer.balance + 10),
+                    Consumer.StatusChoices.IN_COLLECTION,
+                ],
+                [
+                    consumer.ssn,
+                    consumer.client_ref_number,
+                    consumer.name,
+                    consumer.address,
+                    str(consumer.balance + 30),
+                    Consumer.StatusChoices.PAID_IN_FULL,
+                ],
+            ]
+        )
         csv_file.seek(0)
 
         self.client.post("/consumers/upload_csv/", {"file": csv_file}, format="multipart")
@@ -80,13 +113,29 @@ class TestPost(TestCaseMixin, APITestCase):
     def test_that_it_performs_expected_amount_of_queries(self):
         consumer = ConsumerFactory()
         csv_file = io.StringIO()
-        csv.writer(csv_file).writerows([
-            ["ssn", "client reference no", "consumer name", "consumer address", "balance", "status"],
-            [consumer.ssn, consumer.client_ref_number, consumer.name, consumer.address, str(consumer.balance), consumer.status],
-            ["123-45-6789", str(uuid4()), "Cool Name", "1 Cool Street", "2", Consumer.StatusChoices.INACTIVE],
-            ["123-45-6789", str(uuid4()), "Cool Name", "1 Cool Street", "500", Consumer.StatusChoices.PAID_IN_FULL],
-            [consumer.ssn, consumer.client_ref_number, consumer.name, consumer.address, str(consumer.balance + 30), Consumer.StatusChoices.IN_COLLECTION],
-        ])
+        csv.writer(csv_file).writerows(
+            [
+                ["ssn", "client reference no", "consumer name", "consumer address", "balance", "status"],
+                [
+                    consumer.ssn,
+                    consumer.client_ref_number,
+                    consumer.name,
+                    consumer.address,
+                    str(consumer.balance),
+                    consumer.status,
+                ],
+                ["123-45-6789", str(uuid4()), "Cool Name", "1 Cool Street", "2", Consumer.StatusChoices.INACTIVE],
+                ["123-45-6789", str(uuid4()), "Cool Name", "1 Cool Street", "500", Consumer.StatusChoices.PAID_IN_FULL],
+                [
+                    consumer.ssn,
+                    consumer.client_ref_number,
+                    consumer.name,
+                    consumer.address,
+                    str(consumer.balance + 30),
+                    Consumer.StatusChoices.IN_COLLECTION,
+                ],
+            ]
+        )
         csv_file.seek(0)
 
         with self.assertNumQueries(5):

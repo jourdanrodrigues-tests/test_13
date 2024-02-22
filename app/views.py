@@ -6,7 +6,7 @@ from rest_framework.viewsets import GenericViewSet
 
 from app.filters import ConsumerFilterSet
 from app.models import Consumer
-from app.serializers import ConsumerSerializer, ConsumerCsvUploadSerializer
+from app.serializers import ConsumerCsvUploadSerializer, ConsumerSerializer
 
 
 class ConsumerViewSet(GenericViewSet, mixins.ListModelMixin):
@@ -14,9 +14,11 @@ class ConsumerViewSet(GenericViewSet, mixins.ListModelMixin):
     serializer_class = ConsumerSerializer
     filterset_class = ConsumerFilterSet
 
-    @action(detail=False, methods=["POST"], serializer_class=ConsumerCsvUploadSerializer, parser_classes=[MultiPartParser])
+    @action(
+        detail=False, methods=["POST"], serializer_class=ConsumerCsvUploadSerializer, parser_classes=[MultiPartParser]
+    )
     def upload_csv(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(serializer.data['consumers'], status=status.HTTP_200_OK)
+        return Response(serializer.data["consumers"], status=status.HTTP_200_OK)

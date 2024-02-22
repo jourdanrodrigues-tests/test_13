@@ -9,9 +9,9 @@ class User(AbstractUser):
 
 class Consumer(models.Model):
     class StatusChoices(models.TextChoices):
-        INACTIVE = 'INACTIVE', _('Inactive')
-        PAID_IN_FULL = 'PAID_IN_FULL', _('Paid in full')
-        IN_COLLECTION = 'IN_COLLECTION', _('In collection')
+        INACTIVE = "INACTIVE", _("Inactive")
+        PAID_IN_FULL = "PAID_IN_FULL", _("Paid in full")
+        IN_COLLECTION = "IN_COLLECTION", _("In collection")
 
     ssn = models.CharField(max_length=11, primary_key=True)
     client_ref_number = models.UUIDField()
