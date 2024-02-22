@@ -13,9 +13,8 @@ class ConsumerViewSet(GenericViewSet, mixins.ListModelMixin):
     queryset = Consumer.objects.all()
     serializer_class = ConsumerSerializer
     filterset_class = ConsumerFilterSet
-    parser_classes = [MultiPartParser]
 
-    @action(detail=False, methods=["POST"], serializer_class=ConsumerCsvUploadSerializer)
+    @action(detail=False, methods=["POST"], serializer_class=ConsumerCsvUploadSerializer, parser_classes=[MultiPartParser])
     def upload_csv(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
