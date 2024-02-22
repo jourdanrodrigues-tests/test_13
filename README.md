@@ -6,6 +6,8 @@ This project runs entirely on Docker containers. Make sure to [have it](https://
 
 It's temporarily live at http://ec2-54-205-240-89.compute-1.amazonaws.com:8000/
 
+Video walkthrough: https://www.loom.com/share/038afffb5b5f4591b86f8c731c7934c6
+
 ## Endpoints
 
 The API endpoints are thoroughly displayed at `/docs/` (Swagger UI).
